@@ -2,10 +2,7 @@ package com.careerdevs.NASAApod2.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
@@ -31,5 +28,12 @@ public class NasaController {
     @GetMapping("/key")
     public String getKey(){
         return environment.getProperty("myNasaKey");
+    }
+
+    @GetMapping("/date")
+    public Object getDate(@RequestParam String date, RestTemplate restTemplate){
+        String url = nasaApodEndpoint + environment.getProperty("myNasaKey"); //URL which contains authentication
+        url += "&date=" + date;
+            return restTemplate.getForObject(url, Object.class);
     }
 }
